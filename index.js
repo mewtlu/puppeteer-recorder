@@ -1,9 +1,12 @@
 const { spawn } = require('child_process');
-const puppeteer = require('puppeteer');
 
 module.exports.record = async function(options) {
-  const browser = options.browser || (await puppeteer.launch());
+  const browser = options.browser;
   const page = options.page || (await browser.newPage());
+
+  if (!browser) {
+    throw new Error('[puppeteer-recorder] No browser passed in, closing without recording.')
+  }
 
   await options.prepare(browser, page);
 
